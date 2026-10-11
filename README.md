@@ -29,7 +29,7 @@ ORDER BY
 LIMIT 10;
 ```
 I get pretty expected results that Seniors roles was on the top, **but** there was an outsider - **Senior Data Analyst** with average yearly salary 113 000$ which is behind both Data Engineer and Scientist, it may be do to both wrong job titles and extreme outliers
-![Top Paying Roles](assets\1_top_paying_jobs.png)
+![Top Paying Roles](/assets/1_top_paying_jobs.png)
 ### 2. What is the most common skills in those jobs
 ```sql
 WITH job_skill_total_count AS ( --Finding top skill for each job
@@ -80,4 +80,4 @@ ORDER BY
 ```
 First time writting these query I used UNION to 9 rows each contain most common skill with WHERE statement that just looking for titles from previos table, so if something would be changet in database like added new role this query would not show this title so I was looking for some for functions in Postgresql documentaion and find loop function with array but it did not work for me and then I asked for a hint from ChatGPT, it said that a can use subqueres or window functions, because I did know them yet I choosed subquery than it gives me a hint that I can try use subquery in WHERE EXISTS and LEFT JOIN, I tried them both and with pain it worked with WHERE EXISTS but I really spend a lot of time to make it work.
 Then I get a second small trouble that is a bad habit to do WITH table_1 AS(WITH table_2 AS) so I fixed it.
-![Most common skills in top paying jobs](assets\2_most_common_skills_in_top_paying_jobs.png)
+![Most common skills in top paying jobs](/assets/2_most_common_skills_in_top_paying_jobs.png)
