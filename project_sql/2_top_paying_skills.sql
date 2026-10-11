@@ -1,232 +1,32 @@
 /*
  * Top skill for each job
  */
-WITH top_skill_for_job AS ( -- Top skills for top 10 jobs
-	(SELECT -- 1 Total number of skill per Senior Data Scientist
-		jpf.job_title_short ,
-		sd.skills AS skill_name ,
-		COUNT(sd.skill_id) AS total_count_skill
+WITH job_skill_total_count AS ( --Finding top skill for each job
+	SELECT
+		jpf.job_title_short,
+		sd.skills,
+		count(jpf.job_id) AS job_count
 	FROM
 		job_postings_fact jpf
 	INNER JOIN skills_job_dim sjd 
-		ON sjd.job_id = jpf.job_id 
+		ON jpf.job_id = sjd.job_id
 	INNER JOIN skills_dim sd 
 		ON sd.skill_id = sjd.skill_id
 	WHERE
-		jpf.job_work_from_home = TRUE AND
-		jpf.salary_year_avg IS NOT NULL AND
-		jpf.job_title_short = 'Senior Data Scientist'
+		job_location = 'Anywhere' AND 
+		salary_year_avg IS NOT NULL
 	GROUP BY
-		jpf.job_title_short, sd.skills
-	ORDER BY
-		total_count_skill DESC
-	LIMIT 1)
-	
-	UNION 
-	-- 2 Total number of skill per Machine Learning Engineer
-	(SELECT
-		jpf.job_title_short ,
-		sd.skills AS skill_name ,
-		COUNT(sd.skill_id) AS total_count_skill
+		jpf.job_title_short,
+		sd.skills
+),
+top_skill_for_job AS (
+	SELECT
+		job_title_short,
+		skills AS skill_name,
+		job_count 
 	FROM
-		job_postings_fact jpf
-	INNER JOIN skills_job_dim sjd 
-		ON sjd.job_id = jpf.job_id 
-	INNER JOIN skills_dim sd 
-		ON sd.skill_id = sjd.skill_id
-	WHERE
-		jpf.job_work_from_home = TRUE AND
-		jpf.salary_year_avg IS NOT NULL AND
-		jpf.job_title_short = 'Machine Learning Engineer'
-	GROUP BY
-		jpf.job_title_short, sd.skills
-	ORDER BY
-		total_count_skill DESC
-	LIMIT 1)
-	
-	UNION 
-	
-	-- 3 Total number of skill per Senior Data Engineer
-	(SELECT
-		jpf.job_title_short ,
-		sd.skills AS skill_name ,
-		COUNT(sd.skill_id) AS total_count_skill
-	FROM
-		job_postings_fact jpf
-	INNER JOIN skills_job_dim sjd 
-		ON sjd.job_id = jpf.job_id 
-	INNER JOIN skills_dim sd 
-		ON sd.skill_id = sjd.skill_id
-	WHERE
-		jpf.job_work_from_home = TRUE AND
-		jpf.salary_year_avg IS NOT NULL AND
-		jpf.job_title_short = 'Senior Data Engineer'
-	GROUP BY
-		jpf.job_title_short, sd.skills
-	ORDER BY
-		total_count_skill DESC
-	LIMIT 1)
-	
-	UNION 
-	
-	-- 4 Total number of skill per Cloud Engineer
-	(SELECT
-		jpf.job_title_short ,
-		sd.skills AS skill_name ,
-		COUNT(sd.skill_id) AS total_count_skill
-	FROM
-		job_postings_fact jpf
-	INNER JOIN skills_job_dim sjd 
-		ON sjd.job_id = jpf.job_id 
-	INNER JOIN skills_dim sd 
-		ON sd.skill_id = sjd.skill_id
-	WHERE
-		jpf.job_work_from_home = TRUE AND
-		jpf.salary_year_avg IS NOT NULL AND
-		jpf.job_title_short = 'Cloud Engineer'
-	GROUP BY
-		jpf.job_title_short, sd.skills
-	ORDER BY
-		total_count_skill DESC
-	LIMIT 1)
-	
-	UNION 
-	
-	-- 5 Total number of skill per Data Scientist
-	(SELECT
-		jpf.job_title_short ,
-		sd.skills AS skill_name ,
-		COUNT(sd.skill_id) AS total_count_skill
-	FROM
-		job_postings_fact jpf
-	INNER JOIN skills_job_dim sjd 
-		ON sjd.job_id = jpf.job_id 
-	INNER JOIN skills_dim sd 
-		ON sd.skill_id = sjd.skill_id
-	WHERE
-		jpf.job_work_from_home = TRUE AND
-		jpf.salary_year_avg IS NOT NULL AND
-		jpf.job_title_short = 'Data Scientist'
-	GROUP BY
-		jpf.job_title_short, sd.skills
-	ORDER BY
-		total_count_skill DESC
-	LIMIT 1)
-	
-	UNION 
-	
-	-- 6 Total number of skill per Data Engineer
-	(SELECT
-		jpf.job_title_short ,
-		sd.skills AS skill_name ,
-		COUNT(sd.skill_id) AS total_count_skill
-	FROM
-		job_postings_fact jpf
-	INNER JOIN skills_job_dim sjd 
-		ON sjd.job_id = jpf.job_id 
-	INNER JOIN skills_dim sd 
-		ON sd.skill_id = sjd.skill_id
-	WHERE
-		jpf.job_work_from_home = TRUE AND
-		jpf.salary_year_avg IS NOT NULL AND
-		jpf.job_title_short = 'Data Engineer'
-	GROUP BY
-		jpf.job_title_short, sd.skills
-	ORDER BY
-		total_count_skill DESC
-	LIMIT 1)
-	
-	UNION 
-	
-	-- 7 Total number of skill per Software Engineer
-	(SELECT
-		jpf.job_title_short ,
-		sd.skills AS skill_name ,
-		COUNT(sd.skill_id) AS total_count_skill
-	FROM
-		job_postings_fact jpf
-	INNER JOIN skills_job_dim sjd 
-		ON sjd.job_id = jpf.job_id 
-	INNER JOIN skills_dim sd 
-		ON sd.skill_id = sjd.skill_id
-	WHERE
-		jpf.job_work_from_home = TRUE AND
-		jpf.salary_year_avg IS NOT NULL AND
-		jpf.job_title_short = 'Software Engineer'
-	GROUP BY
-		jpf.job_title_short, sd.skills
-	ORDER BY
-		total_count_skill DESC
-	LIMIT 1)
-	
-	UNION 
-	
-	-- 8 Total number of skill per Senior Data Analyst
-	(SELECT
-		jpf.job_title_short ,
-		sd.skills AS skill_name ,
-		COUNT(sd.skill_id) AS total_count_skill
-	FROM
-		job_postings_fact jpf
-	INNER JOIN skills_job_dim sjd 
-		ON sjd.job_id = jpf.job_id 
-	INNER JOIN skills_dim sd 
-		ON sd.skill_id = sjd.skill_id
-	WHERE
-		jpf.job_work_from_home = TRUE AND
-		jpf.salary_year_avg IS NOT NULL AND
-		jpf.job_title_short = 'Senior Data Analyst'
-	GROUP BY
-		jpf.job_title_short, sd.skills
-	ORDER BY
-		total_count_skill DESC
-	LIMIT 1)
-	
-	UNION 
-	
-	-- 9 Total number of skill per Business Analyst
-	(SELECT
-		jpf.job_title_short ,
-		sd.skills AS skill_name ,
-		COUNT(sd.skill_id) AS total_count_skill
-	FROM
-		job_postings_fact jpf
-	INNER JOIN skills_job_dim sjd 
-		ON sjd.job_id = jpf.job_id 
-	INNER JOIN skills_dim sd 
-		ON sd.skill_id = sjd.skill_id
-	WHERE
-		jpf.job_work_from_home = TRUE AND
-		jpf.salary_year_avg IS NOT NULL AND
-		jpf.job_title_short = 'Business Analyst'
-	GROUP BY
-		jpf.job_title_short, sd.skills
-	ORDER BY
-		total_count_skill DESC
-	LIMIT 1)
-	
-	UNION 
-	
-	-- 10 Total number of skill per Data Analyst
-	(SELECT
-		jpf.job_title_short ,
-		sd.skills AS skill_name ,
-		COUNT(sd.skill_id) AS total_count_skill
-	FROM
-		job_postings_fact jpf
-	INNER JOIN skills_job_dim sjd 
-		ON sjd.job_id = jpf.job_id 
-	INNER JOIN skills_dim sd 
-		ON sd.skill_id = sjd.skill_id
-	WHERE
-		jpf.job_work_from_home = TRUE AND
-		jpf.salary_year_avg IS NOT NULL AND
-		jpf.job_title_short = 'Data Analyst'
-	GROUP BY
-		jpf.job_title_short, sd.skills
-	ORDER BY
-		total_count_skill DESC
-	LIMIT 1)
+		job_skill_total_count AS a
+	WHERE NOT EXISTS (SELECT 1 FROM job_skill_total_count AS b WHERE b.job_count > a.job_count AND a.job_title_short = b.job_title_short)
 )
 SELECT -- Top 10 highest paying jobs
 	jpf.job_title_short,
