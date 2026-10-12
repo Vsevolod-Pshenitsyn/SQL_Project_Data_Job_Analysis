@@ -4,8 +4,8 @@ What is the top 10 highest-paying analyst jobs that are available remotely.
 SELECT
 	job_title_short,
 	ROUND(AVG(salary_year_avg), 2) AS avg_salary_for_job,
-	COUNT(job_id) AS job_count
-	percentile_cont(0.5) WITHIN GROUP (ORDER BY AVG(salary_year_avg)) AS median_salary
+	COUNT(job_id) AS job_count,
+	percentile_cont(0.5) WITHIN GROUP (ORDER BY salary_year_avg) AS median_salary
 FROM
 	job_postings_fact
 WHERE
