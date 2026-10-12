@@ -19,7 +19,7 @@ WITH job_skill_total_count AS ( --Finding top skill for each job
 		jpf.job_title_short,
 		sd.skills
 ),
-top_skill_for_job AS (
+top_skill_for_job AS ( -- Filtering top count skills
 	SELECT
 		job_title_short,
 		skills AS skill_name,
@@ -42,5 +42,7 @@ WHERE
 	salary_year_avg IS NOT NULL
 GROUP BY
 	jpf.job_title_short, tsfj.skill_name
+HAVING
+	COUNT(job_id) > 10
 ORDER BY
 	avg_salary_for_job DESC;
